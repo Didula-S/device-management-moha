@@ -8,4 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Device extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'device_id',
+        'name',
+        'department_id',
+        'purchase_date',
+        'warranty_expiration_date',
+        'working_status',
+        'invoice_image',
+    ];
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 }

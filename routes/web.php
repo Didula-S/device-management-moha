@@ -20,3 +20,9 @@ Route::get('/home', function () {
     return view('home');
 })->middleware('auth')->name('home');
 
+Route::get('/devices', [DeviceController::class, 'index'])->name('devices.index');
+Route::get('/devices/create', [DeviceController::class, 'create'])->name('devices.create');
+Route::post('/devices', [DeviceController::class, 'store'])->name('devices.store');
+
+
+
