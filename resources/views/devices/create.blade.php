@@ -6,52 +6,60 @@
     <title>Add New Device</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e9ecef;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            color: #495057;
         }
         .container {
             max-width: 800px;
-            margin: 0 auto;
+            margin: 20px auto;
             background-color: #ffffff;
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         h2 {
-            color: #333;
+            color: #343a40;
             text-align: center;
             margin-bottom: 30px;
+            font-size: 2em;
+            font-weight: 600;
         }
         .form-group {
             margin-bottom: 20px;
+            position: relative;
         }
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
         }
         input[type="text"],
         input[type="date"],
         select,
         .custom-file-input {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ced4da;
             border-radius: 8px;
             box-sizing: border-box;
+            background-color: #f8f9fa;
+            font-size: 1em;
+            color: #495057;
         }
         select {
             appearance: none;
             -webkit-appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath fill='%23333' d='M0 2l4 4 4-4z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 10px center;
+            background-position: right 12px center;
         }
         .custom-file {
             position: relative;
+            overflow: hidden;
         }
         .custom-file-input {
             opacity: 0;
@@ -65,16 +73,34 @@
             cursor: pointer;
         }
         .custom-file-label {
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ced4da;
             border-radius: 8px;
-            background-color: #fff;
+            background-color: #ffffff;
             display: inline-block;
             width: 100%;
             box-sizing: border-box;
+            color: #495057;
+            font-size: 1em;
+        }
+        .custom-file-label::after {
+            content: 'Browse';
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 30%;
+            text-align: center;
+            line-height: 1.5;
         }
         button {
-            background-color: #007bff;
+            background-color: #28a745;
             color: white;
             border: none;
             padding: 15px 30px;
@@ -86,9 +112,21 @@
             transition: all 0.3s ease;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #218838;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            button {
+                padding: 12px 24px;
+                font-size: 16px;
+            }
+            .custom-file-label::after {
+                width: 40%;
+            }
         }
     </style>
 </head>
