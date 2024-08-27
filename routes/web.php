@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\RepairController;
@@ -8,7 +7,13 @@ use App\Http\Controllers\Auth\LoginController;
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::resource('devices', DeviceController::class);
+
+    // Define the resource route, excluding the `show` method
+    Route::resource('devices', DeviceController::class)->except(['show']);
+
+    // Custom route for showing devices under repair
+    Route::get('/devices/repair', [DeviceController::class, 'showRepairs'])->name('devices.repair');
+
     Route::resource('repairs', RepairController::class);
 });
 
@@ -19,10 +24,4 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/home', function () {
     return view('home');
 })->middleware('auth')->name('home');
-
-Route::get('/devices', [DeviceController::class, 'index'])->name('devices.index');
-Route::get('/devices/create', [DeviceController::class, 'create'])->name('devices.create');
-Route::post('/devices', [DeviceController::class, 'store'])->name('devices.store');
-
-
 

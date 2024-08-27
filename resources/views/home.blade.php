@@ -33,7 +33,7 @@
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <h3 class="text-xl font-semibold mb-2">Repairs</h3>
                 <p>Track device repairs and maintenance.</p>
-                <a href="#" class="mt-4 inline-block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                <a href="{{ route('devices.repair') }}" class="mt-4 inline-block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                     View Repairs
                 </a>
             </div>

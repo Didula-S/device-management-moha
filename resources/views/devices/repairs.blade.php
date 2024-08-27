@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devices List</title>
+    <title>Devices Under Repair</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -26,21 +26,6 @@
             margin-bottom: 20px;
             font-size: 2em;
             font-weight: 600;
-        }
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: #28a745;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-            margin-bottom: 20px;
-        }
-        .btn:hover {
-            background-color: #218838;
         }
         table {
             width: 100%;
@@ -71,21 +56,9 @@
             color: #6c757d;
             font-style: italic;
         }
-        .edit-icon {
-            color: #007bff;
-            cursor: pointer;
-            font-size: 18px;
-            text-decoration: none;
-        }
-        .edit-icon:hover {
-            color: #0056b3;
-        }
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
-            }
-            .btn {
-                padding: 10px 20px;
             }
             table {
                 font-size: 0.9em;
@@ -98,8 +71,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Devices List</h1>
-        <a href="{{ route('devices.create') }}" class="btn">Add New Device</a>
+        <h1>Devices Under Repair</h1>
         <table>
             <thead>
                 <tr>
@@ -110,7 +82,6 @@
                     <th>Purchase Date</th>
                     <th>Warranty Expiration Date</th>
                     <th>Invoice Image</th>
-                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -129,12 +100,6 @@
                             <span class="no-image">No Image</span>
                         @endif
                     </td>
-                    <td>
-                        <a href="{{ route('devices.edit', $device->id) }}" class="edit-icon">
-                            &#9998; <!-- Pencil icon for edit -->
-                        </a>
-                    </td>
-                    
                 </tr>
                 @endforeach
             </tbody>

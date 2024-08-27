@@ -49,27 +49,39 @@ class DeviceController extends Controller
         return view('devices.edit', compact('device', 'departments'));
     }
 
+    // Handle the update request
     public function update(Request $request, Device $device)
     {
-        $validatedData = $request->validate([
-            'name' => 'required',
-            'device_id' => 'required|unique:devices,device_id,' . $device->id,
+        $request->validate([
+            'device_id' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'department_id' => 'required|exists:departments,id',
             'purchase_date' => 'required|date',
             'warranty_expiration_date' => 'required|date',
-            'working_status' => 'required|in:Working,Not Working,Under Repair',
-            'invoice_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'working_status' => 'required|string',
+            'invoice_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
+        $device->device_id = $request->input('device_id');
+        $device->name = $request->input('name');
+        $device->department_id = $request->input('department_id');
+        $device->purchase_date = $request->input('purchase_date');
+        $device->warranty_expiration_date = $request->input('warranty_expiration_date');
+        $device->working_status = $request->input('working_status');
+
         if ($request->hasFile('invoice_image')) {
-            Storage::disk('public')->delete($device->invoice_image);
-            $path = $request->file('invoice_image')->store('invoices', 'public');
-            $validatedData['invoice_image'] = $path;
+            // Delete old image if it exists
+            if ($device->invoice_image) {
+                Storage::delete('public/' . $device->invoice_image);
+            }
+            // Store the new image
+            $path = $request->file('invoice_image')->store('invoice_images', 'public');
+            $device->invoice_image = $path;
         }
 
-        $device->update($validatedData);
+        $device->save();
 
-        return redirect()->route('devices.index')->with('success', 'Device updated successfully');
+        return redirect()->route('devices.index')->with('success', 'Device updated successfully.');
     }
 
     public function destroy(Device $device)
@@ -78,5 +90,11 @@ class DeviceController extends Controller
         $device->delete();
 
         return redirect()->route('devices.index')->with('success', 'Device removed successfully');
+    }
+
+    public function showRepairs()
+    {
+        $devices = Device::where('working_status', 'Under Repair')->get();
+        return view('devices.repairs', compact('devices'));
     }
 }
