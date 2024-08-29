@@ -14,6 +14,7 @@
                 <li><a href="{{ route('home') }}" class="hover:text-gray-300">Home</a></li>
                 <li><a href="{{ route('devices.index') }}" class="hover:text-gray-300">Devices</a></li>
                 <li><a href="{{ route('devices.repair') }}" class="hover:text-gray-300">Repairs</a></li>
+                <li><a href="{{ route('repairs.index') }}" class="hover:text-gray-300">Repairs</a></li>
                 <li>
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf

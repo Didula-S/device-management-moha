@@ -9,7 +9,8 @@ class Repair extends Model
 {
     use HasFactory;
 
-    protected $table = 'repair_details';
+    // Remove or comment out this line
+    // protected $table = 'repair_details';
 
     protected $fillable = [
         'device_id',

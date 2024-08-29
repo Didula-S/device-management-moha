@@ -14,6 +14,8 @@ Route::middleware(['auth'])->group(function () {
     // Custom route for showing devices under repair
     Route::get('/devices/repair', [DeviceController::class, 'showRepairs'])->name('devices.repair');
 
+    Route::get('/repairs', [RepairController::class, 'index'])->name('repairs.index');
+
     Route::resource('repairs', RepairController::class);
 });
 

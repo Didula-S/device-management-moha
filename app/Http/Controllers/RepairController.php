@@ -12,11 +12,14 @@ class RepairController extends Controller
     public function index()
     {
         try {
-            $repairs = Repair::with(['device.department', 'repairAgent'])->get();
-            return view('devices.repairs', compact('repairs'));
+            $repairs = Repair::whereHas('device', function ($query) {
+                $query->where('working_status', 'Under Repair');
+            })->with(['device.department', 'repairAgent'])->get();
+
+            return view('repairs.index', compact('repairs'));
         } catch (\Exception $e) {
             \Log::error('Error in RepairController@index: ' . $e->getMessage());
-            return view('devices.repairs', ['repairs' => collect(), 'error' => $e->getMessage()]);
+            return view('repairs.index', ['repairs' => collect(), 'error' => $e->getMessage()]);
         }
     }
 
