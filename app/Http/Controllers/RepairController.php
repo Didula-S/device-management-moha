@@ -11,8 +11,13 @@ class RepairController extends Controller
 {
     public function index()
     {
-        $repairs = Repair::with(['device', 'repairAgent'])->get();
-        return view('repairs.index', compact('repairs'));
+        try {
+            $repairs = Repair::with(['device.department', 'repairAgent'])->get();
+            return view('devices.repairs', compact('repairs'));
+        } catch (\Exception $e) {
+            \Log::error('Error in RepairController@index: ' . $e->getMessage());
+            return view('devices.repairs', ['repairs' => collect(), 'error' => $e->getMessage()]);
+        }
     }
 
     public function create()

@@ -1,109 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devices Under Repair</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #e9ecef;
-            margin: 0;
-            padding: 0;
-            color: #495057;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        h1 {
-            color: #343a40;
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 2em;
-            font-weight: 600;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #dee2e6;
-        }
-        th {
-            background-color: #f8f9fa;
-            color: #343a40;
-            font-weight: 600;
-        }
-        td {
-            background-color: #ffffff;
-        }
-        tr:nth-child(even) td {
-            background-color: #f1f3f5;
-        }
-        .invoice-image {
-            max-width: 120px;
-            border-radius: 8px;
-        }
-        .no-image {
-            color: #6c757d;
-            font-style: italic;
-        }
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-            table {
-                font-size: 0.9em;
-            }
-            .invoice-image {
-                max-width: 100px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Devices Under Repair</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Device ID</th>
-                    <th>Name</th>
-                    <th>Department</th>
-                    <th>Status</th>
-                    <th>Purchase Date</th>
-                    <th>Warranty Expiration Date</th>
-                    <th>Invoice Image</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($devices as $device)
-                <tr>
-                    <td>{{ $device->device_id }}</td>
-                    <td>{{ $device->name }}</td>
-                    <td>{{ $device->department->name }}</td>
-                    <td>{{ $device->working_status }}</td>
-                    <td>{{ $device->purchase_date }}</td>
-                    <td>{{ $device->warranty_expiration_date }}</td>
-                    <td>
-                        @if($device->invoice_image)
-                            <img src="{{ asset('storage/' . $device->invoice_image) }}" alt="Invoice Image" class="invoice-image">
-                        @else
-                            <span class="no-image">No Image</span>
-                        @endif
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+@extends('layouts.app')
+
+@section('title', 'Devices Under Repair')
+
+@section('content')
+    <div class="container mx-auto mt-8">
+        <h1 class="text-3xl font-bold mb-4">Devices Under Repair</h1>
+        
+        @if($repairs->isEmpty())
+            <p>No repairs found.</p>
+        @else
+            <table class="w-full bg-white shadow-md rounded mb-4">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6 text-left">Device ID</th>
+                        <th class="py-3 px-6 text-left">Device Name</th>
+                        <th class="py-3 px-6 text-left">Department</th>
+                        <th class="py-3 px-6 text-left">Repair Agent</th>
+                        <th class="py-3 px-6 text-left">Repair Date</th>
+                        <th class="py-3 px-6 text-left">Repair Type</th>
+                        <th class="py-3 px-6 text-left">Description</th>
+                        <th class="py-3 px-6 text-left">Status</th>
+                        <th class="py-3 px-6 text-left">Start Date</th>
+                        <th class="py-3 px-6 text-left">End Date</th>
+                        <th class="py-3 px-6 text-left">Price</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 text-sm font-light">
+                    @foreach($repairs as $repair)
+                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                        <td class="py-3 px-6 text-left whitespace-nowrap">{{ $repair->device->device_id ?? 'N/A' }}</td>
+                        <td class="py-3 px-6 text-left">{{ $repair->device->name ?? 'N/A' }}</td>
+                        <td class="py-3 px-6 text-left">{{ $repair->device->department->name ?? 'N/A' }}</td>
+                        <td class="py-3 px-6 text-left">{{ $repair->repairAgent->name ?? 'N/A' }}</td>
+                        <td class="py-3 px-6 text-left">{{ $repair->repair_date ?? 'N/A' }}</td>
+                        <td class="py-3 px-6 text-left">{{ $repair->repair_type ?? 'N/A' }}</td>
+                        <td class="py-3 px-6 text-left">{{ $repair->description ?? 'N/A' }}</td>
+                        <td class="py-3 px-6 text-left">{{ $repair->status ?? 'N/A' }}</td>
+                        <td class="py-3 px-6 text-left">{{ $repair->start_date ?? 'N/A' }}</td>
+                        <td class="py-3 px-6 text-left">{{ $repair->end_date ?? 'N/A' }}</td>
+                        <td class="py-3 px-6 text-left">{{ $repair->price ?? 'N/A' }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
     </div>
-</body>
-</html>
+@endsection

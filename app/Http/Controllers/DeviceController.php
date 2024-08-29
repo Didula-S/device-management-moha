@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Device;
 use App\Models\Department;
+use App\Models\Repair;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -33,14 +34,23 @@ class DeviceController extends Controller
             'invoice_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        if ($request->hasFile('invoice_image')) {
-            $path = $request->file('invoice_image')->store('invoices', 'public');
-            $validatedData['invoice_image'] = $path;
+        try {
+            if ($request->hasFile('invoice_image')) {
+                $path = $request->file('invoice_image')->store('invoices', 'public');
+                $validatedData['invoice_image'] = $path;
+            }
+
+            $device = Device::create($validatedData);
+
+            if (!$device) {
+                throw new \Exception('Failed to create device');
+            }
+
+            return redirect()->route('devices.index')->with('success', 'Device added successfully');
+        } catch (\Exception $e) {
+            \Log::error('Error adding device: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'An error occurred while adding the device: ' . $e->getMessage());
         }
-
-        Device::create($validatedData);
-
-        return redirect()->route('devices.index')->with('success', 'Device added successfully');
     }
 
     public function edit(Device $device)
@@ -94,7 +104,9 @@ class DeviceController extends Controller
 
     public function showRepairs()
     {
-        $devices = Device::where('working_status', 'Under Repair')->get();
-        return view('devices.repairs', compact('devices'));
+        $repairs = Repair::with(['device.department', 'repairAgent'])->whereHas('device', function ($query) {
+            $query->where('working_status', 'Under Repair');
+        })->get();
+        return view('devices.repairs', compact('repairs'));
     }
 }

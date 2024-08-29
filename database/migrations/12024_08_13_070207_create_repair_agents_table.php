@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('repair_agents')) {
-            Schema::create('repair_agents', function (Blueprint $table) {
-                $table->id();
-                $table->timestamps();
-            });
-        }
+        Schema::create('repair_agents', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('contact_number');
+            $table->string('email')->unique();
+            $table->timestamps();
+        });
     }
     
 

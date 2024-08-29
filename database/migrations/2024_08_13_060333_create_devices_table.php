@@ -11,12 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('devices')) {
-            Schema::create('devices', function (Blueprint $table) {
-                $table->id();
-                $table->timestamps();
-            });
-        }
+        Schema::create('devices', function (Blueprint $table) {
+            $table->id();
+            $table->string('device_id')->unique();
+            $table->string('name');
+            $table->foreignId('department_id')->constrained();
+            $table->date('purchase_date');
+            $table->date('warranty_expiration_date');
+            $table->string('working_status');
+            $table->string('invoice_image')->nullable();
+            $table->timestamps();
+        });
     }
     
 
