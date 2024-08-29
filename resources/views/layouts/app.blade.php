@@ -10,7 +10,7 @@
     <nav class="bg-gradient-to-r from-blue-400 to-indigo-500 m-4 rounded-xl shadow-lg">
         <div class="container mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
-                <h1 class="text-2xl font-bold text-white">Device Management System</h1>
+                <h1 class="text-2xl font-bold text-white">Device Management System MOHA</h1>
                 <ul class="flex space-x-2">
                     @php
                         $navItems = [

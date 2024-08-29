@@ -33,18 +33,46 @@ class RepairController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'device_id' => 'required|exists:devices,id',
-            'repair_agent_id' => 'required|exists:repair_agents,id',
-            'repair_date' => 'required|date',
+            'device_id' => 'required|exists:devices,device_id',
             'repair_type' => 'required|string',
+            'repair_date' => 'required|date',
             'description' => 'nullable|string',
-            'status' => 'required|in:Completed,In Progress',
+            'status' => 'required|in:In Progress,Completed',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after:start_date',
             'price' => 'required|numeric|min:0',
+            'agent_name' => 'required|string',
+            'contact_number' => 'required|string',
+            'agent_email' => 'required|email',
         ]);
 
-        Repair::create($validatedData);
+        // Update device status
+        $device = Device::where('device_id', $validatedData['device_id'])->firstOrFail();
+        $device->working_status = 'Under Repair';
+        $device->save();
+
+        // Create or update repair agent
+        $repairAgent = RepairAgent::updateOrCreate(
+            ['email' => $validatedData['agent_email']],
+            [
+                'name' => $validatedData['agent_name'],
+                'contact_number' => $validatedData['contact_number'],
+            ]
+        );
+
+        // Create repair record
+        $repair = new Repair([
+            'device_id' => $device->id,
+            'repair_agent_id' => $repairAgent->id,
+            'repair_date' => $validatedData['repair_date'],
+            'repair_type' => $validatedData['repair_type'],
+            'description' => $validatedData['description'],
+            'status' => $validatedData['status'],
+            'start_date' => $validatedData['start_date'],
+            'end_date' => $validatedData['end_date'],
+            'price' => $validatedData['price'],
+        ]);
+        $repair->save();
 
         return redirect()->route('repairs.index')->with('success', 'Repair record created successfully');
     }
