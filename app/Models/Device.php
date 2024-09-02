@@ -23,4 +23,11 @@ class Device extends Model
     {
         return $this->belongsTo(Department::class);
     }
+
+    public function updateWorkingStatus()
+    {
+        $activeRepair = $this->repairs()->where('status', 'In Progress')->first();
+        $this->working_status = $activeRepair ? 'Under Repair' : 'Working';
+        $this->save();
+    }
 }

@@ -32,11 +32,9 @@ class RepairController extends Controller
         $repair->status = $request->status;
         $repair->save();
 
-        if ($repair->status === 'Completed') {
-            $device = $repair->device;
-            $device->working_status = 'Working';
-            $device->save();
-        }
+        $device = $repair->device;
+        $device->working_status = $repair->status === 'In Progress' ? 'Under Repair' : 'Working';
+        $device->save();
 
         return redirect()->route('repairs.index')->with('success', 'Repair status updated successfully.');
     }
@@ -65,9 +63,16 @@ class RepairController extends Controller
         $repair = Repair::create($validatedData);
 
         $device = Device::find($validatedData['device_id']);
-        $device->working_status = 'Under Repair';
+        $device->working_status = $repair->status === 'In Progress' ? 'Under Repair' : 'Working';
         $device->save();
 
         return redirect()->route('repairs.index')->with('success', 'Repair record created successfully.');
+    }
+
+    public function destroy(Repair $repair)
+    {
+        $repair->delete();
+        $repair->device->updateWorkingStatus();
+        return redirect()->route('repairs.index')->with('success', 'Repair record deleted successfully.');
     }
 }
