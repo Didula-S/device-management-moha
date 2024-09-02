@@ -35,4 +35,14 @@ class Device extends Model
     {
         return $this->hasMany(Repair::class);
     }
+
+    public function repairFrequency()
+    {
+        return $this->repairs()->count();
+    }
+
+    public function totalRepairCost()
+    {
+        return $this->repairs()->sum('price');
+    }
 }

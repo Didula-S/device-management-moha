@@ -117,6 +117,8 @@ class DeviceController extends Controller
     public function viewRepairHistory(Device $device)
     {
         $repairs = $device->repairs()->with('repairAgent')->get();
-        return view('devices.repairs_history', compact('device', 'repairs'));
+        $repairFrequency = $device->repairFrequency();
+        $totalRepairCost = $device->totalRepairCost();
+        return view('devices.repairs_history', compact('device', 'repairs', 'repairFrequency', 'totalRepairCost'));
     }
 }

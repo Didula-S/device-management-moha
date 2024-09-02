@@ -81,4 +81,22 @@ class RepairController extends Controller
         $repairs = Repair::with(['device', 'repairAgent'])->get();
         return view('repairs.all_history', compact('repairs'));
     }
+
+    public function trackRepairs()
+    {
+        return view('repairs.track');
+    }
+
+    public function searchRepairs(Request $request)
+    {
+        $request->validate([
+            'device_id' => 'required|exists:devices,device_id',
+        ]);
+
+        $device = Device::where('device_id', $request->device_id)->first();
+        $repairs = $device->repairs()->with('repairAgent')->get();
+        $totalCost = $repairs->sum('price');
+
+        return view('repairs.track_results', compact('device', 'repairs', 'totalCost'));
+    }
 }

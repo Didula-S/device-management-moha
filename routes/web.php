@@ -29,3 +29,6 @@ Route::get('/home', function () {
     return view('home');
 })->middleware('auth')->name('home');
 
+Route::get('/repairs/track', [RepairController::class, 'trackRepairs'])->name('repairs.track');
+Route::post('/repairs/track', [RepairController::class, 'searchRepairs'])->name('repairs.search');
+
