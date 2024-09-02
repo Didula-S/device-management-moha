@@ -49,7 +49,6 @@
                 <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="working_status" name="working_status" required>
                     <option value="Working" {{ $device->working_status == 'Working' ? 'selected' : '' }}>Working</option>
                     <option value="Not Working" {{ $device->working_status == 'Not Working' ? 'selected' : '' }}>Not Working</option>
-                    <option value="Under Repair" {{ $device->working_status == 'Under Repair' ? 'selected' : '' }}>Under Repair</option>
                 </select>
             </div>
             <div class="mb-4">

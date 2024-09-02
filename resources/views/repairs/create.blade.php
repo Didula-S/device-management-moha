@@ -9,9 +9,13 @@
     <div class="mb-4">
         <h2 class="text-xl font-bold mb-2">Device Details</h2>
         <label class="block text-gray-700 text-sm font-bold mb-2" for="device_id">
-            Device ID
+            Device
         </label>
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="device_id" type="text" name="device_id" required>
+        <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="device_id" name="device_id" required>
+            @foreach($devices as $device)
+                <option value="{{ $device->id }}">{{ $device->name }} ({{ $device->device_id }})</option>
+            @endforeach
+        </select>
     </div>
 
     <div class="mb-4">
@@ -57,20 +61,14 @@
 
     <div class="mb-4">
         <h2 class="text-xl font-bold mb-2">Repair Agent Details</h2>
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="agent_name">
-            Agent Name
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="repair_agent_id">
+            Repair Agent
         </label>
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="agent_name" type="text" name="agent_name" required>
-
-        <label class="block text-gray-700 text-sm font-bold mb-2 mt-4" for="contact_number">
-            Contact Number
-        </label>
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="contact_number" type="text" name="contact_number" required>
-
-        <label class="block text-gray-700 text-sm font-bold mb-2 mt-4" for="agent_email">
-            Email
-        </label>
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="agent_email" type="email" name="agent_email" required>
+        <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="repair_agent_id" name="repair_agent_id" required>
+            @foreach($repairAgents as $agent)
+                <option value="{{ $agent->id }}">{{ $agent->name }}</option>
+            @endforeach
+        </select>
     </div>
 
     <div class="flex items-center justify-between">

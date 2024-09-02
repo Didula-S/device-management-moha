@@ -68,7 +68,7 @@ class DeviceController extends Controller
             'department_id' => 'required|exists:departments,id',
             'purchase_date' => 'required|date',
             'warranty_expiration_date' => 'required|date',
-            'working_status' => 'required|string',
+            'working_status' => 'required|in:Working,Not Working',
             'invoice_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
@@ -77,7 +77,11 @@ class DeviceController extends Controller
         $device->department_id = $request->input('department_id');
         $device->purchase_date = $request->input('purchase_date');
         $device->warranty_expiration_date = $request->input('warranty_expiration_date');
-        $device->working_status = $request->input('working_status');
+        
+        // Preserve "Under Repair" status if it was previously set
+        if ($device->working_status !== 'Under Repair') {
+            $device->working_status = $request->input('working_status');
+        }
 
         if ($request->hasFile('invoice_image')) {
             // Delete old image if it exists
