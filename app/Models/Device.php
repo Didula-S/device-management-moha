@@ -30,4 +30,9 @@ class Device extends Model
         $this->working_status = $activeRepair ? 'Under Repair' : 'Working';
         $this->save();
     }
+
+    public function repairs()
+    {
+        return $this->hasMany(Repair::class);
+    }
 }

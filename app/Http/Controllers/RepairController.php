@@ -75,4 +75,10 @@ class RepairController extends Controller
         $repair->device->updateWorkingStatus();
         return redirect()->route('repairs.index')->with('success', 'Repair record deleted successfully.');
     }
+
+    public function viewAllRepairHistory()
+    {
+        $repairs = Repair::with(['device', 'repairAgent'])->get();
+        return view('repairs.all_history', compact('repairs'));
+    }
 }

@@ -4,6 +4,7 @@
 <div class="container mx-auto px-4">
     <h1 class="text-2xl font-bold mb-4">Devices Under Repair</h1>
     <a href="{{ route('repairs.create') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">Record a Repair</a>
+    <a href="{{ route('repairs.history') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">View All Repair History</a>
     
     @if(session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -39,7 +40,8 @@
                 <td class="py-3 px-6 text-left">{{ $repair->description }}</td>
                 <td class="py-3 px-6 text-left">{{ $repair->status }}</td>
                 <td class="py-3 px-6 text-left">
-                    <a href="{{ route('repairs.edit', $repair->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-xs">Edit</a>
+                    <a href="{{ route('repairs.edit', $repair->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-xs mr-1">Edit</a>
+                    <a href="{{ route('devices.repairs.history', $repair->device->id) }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-xs">View Repair History</a>
                 </td>
             </tr>
             @empty

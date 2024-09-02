@@ -113,4 +113,10 @@ class DeviceController extends Controller
         })->get();
         return view('devices.repairs', compact('repairs'));
     }
+
+    public function viewRepairHistory(Device $device)
+    {
+        $repairs = $device->repairs()->with('repairAgent')->get();
+        return view('devices.repairs_history', compact('device', 'repairs'));
+    }
 }
