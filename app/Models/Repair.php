@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Repair extends Model
 {
@@ -30,6 +31,8 @@ class Repair extends Model
         'end_date' => 'date',
         'price' => 'decimal:2',
     ];
+
+    protected $dates = ['repair_date', 'start_date', 'end_date'];
 
     public function device()
     {

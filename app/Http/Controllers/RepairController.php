@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Device;
 use App\Models\Repair;
 use App\Models\RepairAgent;
@@ -94,9 +95,30 @@ class RepairController extends Controller
         ]);
 
         $device = Device::where('device_id', $request->device_id)->first();
-        $repairs = $device->repairs()->with('repairAgent')->get();
+        $repairs = $device->repairs()->with('repairAgent')->orderBy('repair_date')->get();
         $totalCost = $repairs->sum('price');
 
-        return view('repairs.track_results', compact('device', 'repairs', 'totalCost'));
+        $repairFrequencies = [];
+        for ($i = 0; $i < $repairs->count() - 1; $i++) {
+            $currentRepair = $repairs[$i];
+            $nextRepair = $repairs[$i + 1];
+            
+            $currentDate = Carbon::parse($currentRepair->repair_date);
+            $nextDate = Carbon::parse($nextRepair->repair_date);
+
+            $interval = $nextDate->diff($currentDate);
+
+            $timeGap = [];
+            if ($interval->y > 0) $timeGap[] = $interval->y . ' year' . ($interval->y > 1 ? 's' : '');
+            if ($interval->m > 0) $timeGap[] = $interval->m . ' month' . ($interval->m > 1 ? 's' : '');
+            if ($interval->d > 0) $timeGap[] = $interval->d . ' day' . ($interval->d > 1 ? 's' : '');
+            
+            $repairFrequencies[] = [
+                'interval' => "Between repair #" . ($i + 1) . " and #" . ($i + 2),
+                'timeGap' => implode(', ', $timeGap)
+            ];
+        }
+
+        return view('repairs.track_results', compact('device', 'repairs', 'totalCost', 'repairFrequencies'));
     }
 }

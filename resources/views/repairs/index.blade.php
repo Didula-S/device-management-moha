@@ -4,7 +4,8 @@
 <div class="container mx-auto px-4">
     <h1 class="text-2xl font-bold mb-4">Devices Under Repair</h1>
     <a href="{{ route('repairs.create') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">Record a Repair</a>
-    <a href="{{ route('repairs.history') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">View All Repair History</a>
+    <a href="{{ route('repairs.history') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block ml-2">View All Repair History</a>
+    <a href="{{ route('repairs.track') }}" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block ml-2">Track Repairs</a>
     
     @if(session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -16,6 +17,7 @@
         <thead>
             <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                 <th class="py-3 px-6 text-left">Device Name</th>
+                <th class="py-3 px-6 text-left">Device ID</th>
                 <th class="py-3 px-6 text-left">Department</th>
                 <th class="py-3 px-6 text-left">Repair Agent</th>
                 <th class="py-3 px-6 text-left">Repair Date</th>
@@ -29,6 +31,7 @@
             @forelse($repairs as $repair)
             <tr class="border-b border-gray-200 hover:bg-gray-100">
                 <td class="py-3 px-6 text-left whitespace-nowrap">{{ $repair->device->name }}</td>
+                <td class="py-3 px-6 text-left">{{ $repair->device->device_id }}</td>
                 <td class="py-3 px-6 text-left">{{ $repair->device->department->name }}</td>
                 <td class="py-3 px-6 text-left">
                     {{ $repair->repairAgent->name }}<br>
@@ -46,7 +49,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="8" class="py-3 px-6 text-center">No repairs in progress found.</td>
+                <td colspan="9" class="py-3 px-6 text-center">No repairs in progress found.</td>
             </tr>
             @endforelse
         </tbody>

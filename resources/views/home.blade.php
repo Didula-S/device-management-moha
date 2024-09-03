@@ -20,10 +20,10 @@
             </a>
         </div>
         <div class="bg-white p-6 rounded-lg shadow-md">
-            <h3 class="text-xl font-semibold mb-2">Reports</h3>
-            <p>Generate and view reports.</p>
-            <a href="#" class="mt-4 inline-block bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
-                View Reports
+            <h3 class="text-xl font-semibold mb-2">Track Device Repairs</h3>
+            <p>Track device repairs and maintenance.</p>
+            <a href="{{ route('repairs.track') }}" class="mt-4 inline-block bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                Track Repairs
             </a>
         </div>
     </div>

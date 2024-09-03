@@ -10,6 +10,7 @@
         <thead>
             <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                 <th class="py-3 px-6 text-left">Device Name</th>
+                <th class="py-3 px-6 text-left">Device ID</th>
                 <th class="py-3 px-6 text-left">Repair Date</th>
                 <th class="py-3 px-6 text-left">Repair Type</th>
                 <th class="py-3 px-6 text-left">Repair Agent</th>
@@ -22,6 +23,7 @@
             @foreach($repairs as $repair)
             <tr class="border-b border-gray-200 hover:bg-gray-100">
                 <td class="py-3 px-6 text-left">{{ $repair->device->name }}</td>
+                <td class="py-3 px-6 text-left">{{ $repair->device->device_id }}</td>
                 <td class="py-3 px-6 text-left">{{ $repair->repair_date }}</td>
                 <td class="py-3 px-6 text-left">{{ $repair->repair_type }}</td>
                 <td class="py-3 px-6 text-left">
@@ -30,7 +32,7 @@
                     {{ $repair->repairAgent->email }}
                 </td>
                 <td class="py-3 px-6 text-left">{{ $repair->status }}</td>
-                <td class="py-3 px-6 text-left">{{ $repair->price }}</td>
+                <td class="py-3 px-6 text-left">LKR {{ number_format($repair->price, 2) }}</td>
                 <td class="py-3 px-6 text-left">{{ $repair->description }}</td>
             </tr>
             @endforeach
