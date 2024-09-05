@@ -10,12 +10,23 @@ use Illuminate\Http\Request;
 
 class RepairController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $repairs = Repair::where('status', 'In Progress')
-                         ->with(['device.department', 'repairAgent'])
-                         ->get();
+        $query = Repair::where('status', 'In Progress')
+                       ->with(['device.department', 'repairAgent']);
 
+        if ($request->has('search')) {
+            $searchTerm = $request->search;
+            $query->whereHas('device', function ($q) use ($searchTerm) {
+                $q->where('name', 'like', "%{$searchTerm}%")
+                  ->orWhere('device_id', 'like', "%{$searchTerm}%")
+                  ->orWhereHas('department', function ($subQ) use ($searchTerm) {
+                      $subQ->where('name', 'like', "%{$searchTerm}%");
+                  });
+            });
+        }
+
+        $repairs = $query->get();
         return view('repairs.index', compact('repairs'));
     }
 
@@ -115,7 +126,7 @@ class RepairController extends Controller
             
             $repairFrequencies[] = [
                 'interval' => "Between repair #" . ($i + 1) . " and #" . ($i + 2),
-                'timeGap' => implode(', ', $timeGap)
+                'timeGap' => !empty($timeGap) ? implode(', ', $timeGap) : 'Same day'
             ];
         }
 

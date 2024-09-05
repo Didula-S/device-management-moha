@@ -5,7 +5,13 @@
 @section('content')
     <div class="container mx-auto px-4">
         <h1 class="text-3xl font-bold mb-4">Devices</h1>
-        <a href="{{ route('devices.create') }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mb-4 inline-block transition duration-300 ease-in-out">Add New Device</a>
+        <div class="flex justify-between items-center mb-4">
+            <a href="{{ route('devices.create') }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">Add New Device</a>
+            <form action="{{ route('devices.index') }}" method="GET" class="flex">
+                <input type="text" name="search" placeholder="Search devices..." class="border rounded-l px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ request('search') }}">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r transition duration-300 ease-in-out">Search</button>
+            </form>
+        </div>
         
         <table class="w-full bg-white shadow-md rounded mb-4">
             <thead>

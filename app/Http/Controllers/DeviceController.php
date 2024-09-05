@@ -10,9 +10,22 @@ use Illuminate\Support\Facades\Storage;
 
 class DeviceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $devices = Device::with('department')->get();
+        $query = Device::with('department');
+
+        if ($request->has('search')) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'like', "%{$searchTerm}%")
+                  ->orWhere('device_id', 'like', "%{$searchTerm}%")
+                  ->orWhereHas('department', function ($subQ) use ($searchTerm) {
+                      $subQ->where('name', 'like', "%{$searchTerm}%");
+                  });
+            });
+        }
+
+        $devices = $query->get();
         return view('devices.index', compact('devices'));
     }
 

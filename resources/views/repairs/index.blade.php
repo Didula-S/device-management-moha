@@ -13,6 +13,14 @@
         </div>
     @endif
 
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold">Repairs In Progress</h2>
+        <form action="{{ route('repairs.index') }}" method="GET" class="flex">
+            <input type="text" name="search" placeholder="Search repairs..." class="border rounded-l px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ request('search') }}">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r transition duration-300 ease-in-out">Search</button>
+        </form>
+    </div>
+
     <table class="w-full bg-white shadow-md rounded mb-4">
         <thead>
             <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
@@ -24,7 +32,7 @@
                 <th class="py-3 px-6 text-left">Repair Type</th>
                 <th class="py-3 px-6 text-left">Description</th>
                 <th class="py-3 px-6 text-left">Status</th>
-                <th class="py-3 px-6 text-left">Actions</th>
+                <th class="py-3 px-6 text-left w-24">Actions</th>
             </tr>
         </thead>
         <tbody class="text-gray-600 text-sm font-light">
@@ -43,8 +51,7 @@
                 <td class="py-3 px-6 text-left">{{ $repair->description }}</td>
                 <td class="py-3 px-6 text-left">{{ $repair->status }}</td>
                 <td class="py-3 px-6 text-left">
-                    <a href="{{ route('repairs.edit', $repair->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-xs mr-1">Edit</a>
-                    <a href="{{ route('devices.repairs.history', $repair->device->id) }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-xs">View Repair History</a>
+                    <a href="{{ route('repairs.edit', $repair->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-xs">Edit</a>
                 </td>
             </tr>
             @empty
@@ -55,5 +62,6 @@
         </tbody>
     </table>
 </div>
+
 @endsection
 
