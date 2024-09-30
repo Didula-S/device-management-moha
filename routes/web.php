@@ -4,6 +4,7 @@ use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\RepairController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DepartmentController;
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -31,4 +32,6 @@ Route::get('/home', function () {
 
 Route::get('/repairs/track', [RepairController::class, 'trackRepairs'])->name('repairs.track');
 Route::post('/repairs/track', [RepairController::class, 'searchRepairs'])->name('repairs.search');
+
+Route::post('/departments', [DepartmentController::class, 'store'])->name('departments.store');
 
