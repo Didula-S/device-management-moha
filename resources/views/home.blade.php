@@ -32,6 +32,7 @@
             <button onclick="openDepartmentModal()" class="mt-4 inline-block bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
                 Add Department
             </button>
+            <div id="departmentsList" class="mt-4"></div>
         </div>
     </div>
 
@@ -59,8 +60,22 @@
     </div>
 
     <script>
-        function openDepartmentModal() {
-            document.getElementById('departmentModal').classList.remove('hidden');
+        function openDepartmentModal(department = null) {
+            const modal = document.getElementById('departmentModal');
+            const form = document.getElementById('departmentForm');
+            const titleElement = modal.querySelector('h3');
+
+            if (department) {
+                titleElement.textContent = 'Edit Department';
+                document.getElementById('departmentName').value = department.name;
+                form.setAttribute('data-department-id', department.id);
+            } else {
+                titleElement.textContent = 'Add New Department';
+                document.getElementById('departmentName').value = '';
+                form.removeAttribute('data-department-id');
+            }
+
+            modal.classList.remove('hidden');
         }
 
         document.getElementById('closeModal').addEventListener('click', function() {
@@ -70,21 +85,31 @@
         document.getElementById('departmentForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const formData = new FormData(this);
-            fetch('{{ route("departments.store") }}', {
-                method: 'POST',
-                body: formData,
+            const departmentId = this.getAttribute('data-department-id');
+            const url = departmentId ? `{{ url('departments') }}/${departmentId}` : '{{ route("departments.store") }}';
+            const method = departmentId ? 'PUT' : 'POST';
+
+            fetch(url, {
+                method: method,
+                body: JSON.stringify({
+                    name: formData.get('name'),
+                    _token: '{{ csrf_token() }}'
+                }),
                 headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-Requested-With': 'XMLHttpRequest',
                 }
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('Department added successfully!');
+                    alert(data.message);
                     document.getElementById('departmentModal').classList.add('hidden');
                     document.getElementById('departmentName').value = '';
+                    fetchDepartments();
                 } else {
-                    alert('Error adding department. Please try again.');
+                    alert('Error: ' + data.message);
                 }
             })
             .catch(error => {
@@ -92,5 +117,59 @@
                 alert('An error occurred. Please try again.');
             });
         });
+
+        function fetchDepartments() {
+            fetch('{{ route("departments.index") }}')
+                .then(response => response.json())
+                .then(data => {
+                    const departmentsList = document.getElementById('departmentsList');
+                    departmentsList.innerHTML = '';
+                    data.forEach(department => {
+                        const departmentElement = document.createElement('div');
+                        departmentElement.className = 'flex justify-between items-center mt-2';
+                        departmentElement.innerHTML = `
+                            <span>${department.name}</span>
+                            <div>
+                                <button onclick='openDepartmentModal(${JSON.stringify(department)})' class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-xs mr-2">
+                                    Edit
+                                </button>
+                                <button onclick="deleteDepartment(${department.id})" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-xs">
+                                    Delete
+                                </button>
+                            </div>
+                        `;
+                        departmentsList.appendChild(departmentElement);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function deleteDepartment(id) {
+            if (confirm('Are you sure you want to delete this department?')) {
+                fetch(`{{ url('departments') }}/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'X-Requested-With': 'XMLHttpRequest',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        fetchDepartments();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                });
+            }
+        }
+
+        // Fetch departments when the page loads
+        fetchDepartments();
     </script>
 @endsection

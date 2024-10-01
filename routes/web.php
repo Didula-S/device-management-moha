@@ -34,4 +34,8 @@ Route::get('/repairs/track', [RepairController::class, 'trackRepairs'])->name('r
 Route::post('/repairs/track', [RepairController::class, 'searchRepairs'])->name('repairs.search');
 
 Route::post('/departments', [DepartmentController::class, 'store'])->name('departments.store');
+Route::put('/departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
+Route::delete('/departments/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
+
+Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');
 
