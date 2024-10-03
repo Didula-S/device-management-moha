@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('repairs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('device_id')->constrained();
+            $table->foreignId('device_id')->constrained()->onDelete('cascade');
             $table->foreignId('repair_agent_id')->constrained();
             $table->date('repair_date');
             $table->string('repair_type');

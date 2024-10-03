@@ -44,15 +44,9 @@ class DeviceController extends Controller
             'purchase_date' => 'required|date',
             'warranty_expiration_date' => 'required|date',
             'working_status' => 'required|in:Working,Not Working,Under Repair',
-            'invoice_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         try {
-            if ($request->hasFile('invoice_image')) {
-                $path = $request->file('invoice_image')->store('invoices', 'public');
-                $validatedData['invoice_image'] = $path;
-            }
-
             $device = Device::create($validatedData);
 
             if (!$device) {
@@ -82,7 +76,6 @@ class DeviceController extends Controller
             'purchase_date' => 'required|date',
             'warranty_expiration_date' => 'required|date',
             'working_status' => 'required|in:Working,Not Working',
-            'invoice_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $device->device_id = $request->input('device_id');
@@ -113,7 +106,6 @@ class DeviceController extends Controller
 
     public function destroy(Device $device)
     {
-        Storage::disk('public')->delete($device->invoice_image);
         $device->delete();
 
         return redirect()->route('devices.index')->with('success', 'Device removed successfully');

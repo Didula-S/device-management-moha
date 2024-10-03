@@ -5,6 +5,7 @@ use App\Http\Controllers\RepairController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\RepairAgentController;
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -38,4 +39,9 @@ Route::put('/departments/{department}', [DepartmentController::class, 'update'])
 Route::delete('/departments/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
 
 Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');
+
+Route::post('/repair-agents', [RepairAgentController::class, 'store'])->name('repair-agents.store');
+Route::put('/repair-agents/{repairAgent}', [RepairAgentController::class, 'update'])->name('repair-agents.update');
+Route::delete('/repair-agents/{repairAgent}', [RepairAgentController::class, 'destroy'])->name('repair-agents.destroy');
+Route::get('/repair-agents', [RepairAgentController::class, 'index'])->name('repair-agents.index');
 
